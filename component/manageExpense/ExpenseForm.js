@@ -30,6 +30,7 @@ function ExpenseForm ({onCancle,submitButtonLable,onsubmit,defaultValue}){
         })
     }
     function submitHandler(){
+        console.log('submit called')
         const expenseData={
           amount:+inputValue.amount.value,
           date: new Date(inputValue.date.value),
