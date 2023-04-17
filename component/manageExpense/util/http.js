@@ -3,17 +3,20 @@ import { BackHandler } from "react-native";
 
 const BACKEND_URL = "https://tracker-app-81bac-default-rtdb.firebaseio.com";
 
- export async function storeExpense(expenseData) {
-  const response= await axios.post(BACKEND_URL + "/expenses.json", expenseData);
-  const id= response.data.name
-  return id
+export async function storeExpense(expenseData) {
+  const response = await axios.post(
+    BACKEND_URL + "/expenses.json",
+    expenseData
+  );
+  const id = response.data.name;
+  return id;
 }
 export async function fetchExpenses() {
   const response = await axios.get(BACKEND_URL + "/expenses.json");
   const expenses = [];
   console.log(response.data);
   for (const key in response.data) {
-    console.log({key})
+    console.log({ key });
     if (response.data.hasOwnProperty(key)) {
       const expenseobj = {
         id: key,
@@ -26,10 +29,14 @@ export async function fetchExpenses() {
   }
   return expenses;
 }
-export   function updateExpense(id,expenseData){
-  console.log("hi from updatee")
-  return axios.put(BACKEND_URL+`/expenses${id}.json`,expenseData) 
+export function updateExpense(id, expenseData) {
+  console.log("hi from update");
+  console.log(expenseData);
+  console.log(id);
+
+  return axios.put(BACKEND_URL + `/expenses${id}.json`, expenseData);
 }
-export  function deleteExpense(id){
-  return axios.delete(BACKEND_URL+`/expenses${id}.json`)
+export function deleteExpense(id) {
+  console.log("from delete---", id);
+  return axios.delete(BACKEND_URL + `/expenses${id}.json`);
 }

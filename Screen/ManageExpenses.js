@@ -6,7 +6,11 @@ import Buttons from "../component/constant/ui/Buttons";
 import { ExpensesContext } from "./store/expensesContext";
 import ExpenseForm from "../component/manageExpense/ExpenseForm";
 import { isEnabled } from "react-native/Libraries/Performance/Systrace";
-import { storeExpense ,updateExpense,deleteExpense} from "../component/manageExpense/util/http";
+import {
+  storeExpense,
+  updateExpense,
+  deleteExpense,
+} from "../component/manageExpense/util/http";
 
 function ManageExpenses({ route, navigation }) {
   const expensesCtx = useContext(ExpensesContext);
@@ -22,19 +26,18 @@ function ManageExpenses({ route, navigation }) {
     });
   }, [isEditing, navigation]);
   async function deleteHandler() {
-    await selectedExpnses(editedExpenseId)
+    await deleteExpense(editedExpenseId);
     expensesCtx.deleteExpense(editedExpenseId);
-    
+
     navigation.goBack();
   }
-   async  function confirmHandler(expenseData) {
+  async function confirmHandler(expenseData) {
     if (isEditing) {
-      
-       expensesCtx.updateExpense(editedExpenseId, expenseData);
-      await updateExpense(editedExpenseId,expenseData)
+      expensesCtx.updateExpense(editedExpenseId, expenseData);
+      await updateExpense(editedExpenseId, expenseData);
     } else {
-     const id=await storeExpense(expenseData);
-      storeExpense({...expenseData,id});
+      const id = await storeExpense(expenseData);
+      storeExpense({ ...expenseData, id });
       expensesCtx.addExpense(expenseData);
     }
     navigation.goBack();
