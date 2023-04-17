@@ -1,7 +1,9 @@
 function getFormattedDate(date) {
-  if (!date instanceof Date) {
+  const isDate = date instanceof Date;
+  if (!isDate) {
     return "Not Date";
   }
+
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 export function getDateMinusDays(date,days){

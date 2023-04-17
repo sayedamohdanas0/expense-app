@@ -1,44 +1,9 @@
 import { createContext, useReducer } from "react";
-const DUMMY_EXPENSES = [
-  {
-    id: "c1",
-    description: "A pair of Shoes",
-    amount: 59.99,
-    date: new Date("2023-04-03"),
-  },
-  {
-    id: "c2",
-    description: "A pair of trousers",
-    amount: 89.29,
-    date: new Date("2023-04-04"),
-  },
-  {
-    id: "c3",
-    description: "Some bananas",
-    amount: 5.99,
-    date: new Date("2023-04-15"),
-  },
-  {
-    id: "c4",
-    description: "A book",
-    amount: 14.99,
-    date: new Date("2023-04-17"),
-  },
-  {
-    id: "c5",
-    description: "Another Book",
-    amount: 18.59,
-    date: new Date("2023-04-18"),
-  },
-];
 
 export const ExpensesContext = createContext({
   expenses: [],
-  addExpense: () => {
-    {
-      description, date, amount;
-    }
-  },
+  addExpense: () => {{description, date, amount;}},
+  setExpenses:(expenses)=>{},
   deleteExpense: (id) => {},
   updateExpense: (id, { description, date, amount }) => {},
 });
@@ -47,6 +12,8 @@ function expenseReducer(state, action) {
     case "Add":
       const id = new Date().toString() + Math.random().toString();
       return [{ ...action.payload, id: id }, ...state];
+      case "SET":
+        return action.payload;
     case "Delete":
       return state.filter((expense) => expense.id !== action.payload.id);
     case "Update":
@@ -68,7 +35,7 @@ function expenseReducer(state, action) {
 }
 
 function ExpensesContextProvider({ children }) {
-  const [expenseState, dispatch] = useReducer(expenseReducer, DUMMY_EXPENSES);
+  const [expenseState, dispatch] = useReducer(expenseReducer, []);
 
   function addExpense(expenseData) {
     dispatch({ type: "Add", payload: expenseData });
@@ -77,12 +44,17 @@ function ExpensesContextProvider({ children }) {
   function deleteExpense(id) {
     dispatch({ type: "Delete", payload: { id } });
   }
+  function setExpenses(expenses){
+    dispatch({type:"SET",payload:expenses})
+  }
   function updateExpense(id, expenseData) {
     dispatch({ type: "Update", payload: { id: id, data: expenseData } });
   }
 
   const value = {
+   
     expenses: expenseState,
+    setExpenses:setExpenses,
     addExpense: addExpense,
     deleteExpense: deleteExpense,
     updateExpense: updateExpense,
